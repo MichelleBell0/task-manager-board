@@ -1,6 +1,9 @@
 // Retrieve tasks and nextId from localStorage
 let taskList = JSON.parse(localStorage.getItem("tasks")) || []; // added "|| []" condition, in case "tasks" does not exist in local storage
 let nextId = JSON.parse(localStorage.getItem("nextId"));
+const taskTitleInputEl = $('#task-title');
+const taskDateInputEl = $('#task-due-date');
+const taskDescriptionInputEl = $('task-description');
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
@@ -75,7 +78,31 @@ function renderTaskList() {
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event){
+    event.preventDefault();
 
+    const taskId = generateTaskId();
+    const taskTitle = taskTitleInputEl.val().trim();
+    const taskDate = taskDateInputEl.val();
+    const taskDescription = taskDescriptionInputEl.val().trim();
+
+    const newTask = {
+        id: taskId,
+        title: taskTitle,
+        dueDate: taskDate,
+        description: taskDescription,
+        status: 'to-do'
+    };
+
+    const tasks = taskList;
+    tasks.push(newTask);
+
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+
+    renderTaskList();
+
+    taskTitleInputEl.val('');
+    taskDateInputEl.val('');
+    taskDescriptionInputEl.val('');
 }
 
 // Todo: create a function to handle deleting a task
