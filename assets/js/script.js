@@ -37,3 +37,11 @@ function handleDrop(event, ui) {
 $(document).ready(function () {
 
 });
+
+const formModal = document.getElementById('formModal')
+if (formModal) {
+    formModal.addEventListener('show.bs.modal', event => {
+    // Button that triggered the modal
+    const button = event.relatedTarget;
+  });
+}
