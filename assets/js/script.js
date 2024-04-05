@@ -1,9 +1,11 @@
 // Retrieve tasks and nextId from localStorage
 let taskList = JSON.parse(localStorage.getItem("tasks")) || []; // added "|| []" condition, in case "tasks" does not exist in local storage
 let nextId = JSON.parse(localStorage.getItem("nextId"));
+const taskFormEl = $('#task-form');
 const taskTitleInputEl = $('#task-title');
 const taskDateInputEl = $('#task-due-date');
 const taskDescriptionInputEl = $('task-description');
+const taskDisplayEl = $('#task-display');
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
@@ -83,7 +85,7 @@ function handleAddTask(event){
     const taskId = generateTaskId();
     const taskTitle = taskTitleInputEl.val().trim();
     const taskDate = taskDateInputEl.val();
-    const taskDescription = taskDescriptionInputEl.val().trim();
+    const taskDescription = taskDescriptionInputEl.val();
 
     const newTask = {
         id: taskId,
@@ -136,11 +138,6 @@ function handleDrop(event, ui) {
     renderTaskList();
 }
 
-// Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
-$(document).ready(function () {
-
-});
-
 // When the "Add Task" button is clicked, a modal pops up with a form to input task content 
 const formModal = document.getElementById('formModal');
 if (formModal) {
@@ -148,3 +145,22 @@ if (formModal) {
     const button = event.relatedTarget;
   });
 }
+
+taskFormEl.on('submit', handleAddTask);
+
+taskDisplayEl.on('click', '.btn-delete-task', handleDeleteTask);
+
+// Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
+$(document).ready(function () {
+    renderTaskList();
+
+    $('#task-due-date').datepicker({
+        changeMonth: true,
+        changeYear: true
+    });
+
+    $('.lane').droppable({
+        accept: '.draggable',
+        drop: handleDrop
+    });
+});
