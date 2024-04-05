@@ -4,7 +4,7 @@ let nextId = JSON.parse(localStorage.getItem("nextId"));
 const taskFormEl = $('#task-form');
 const taskTitleInputEl = $('#task-title');
 const taskDateInputEl = $('#task-due-date');
-const taskDescriptionInputEl = $('task-description');
+const taskDescriptionInputEl = $('#task-description');
 const taskDisplayEl = $('#task-display');
 
 // Todo: create a function to generate a unique task id
@@ -48,6 +48,8 @@ function createTaskCard(task) {
 
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
+    const taskList = JSON.parse(localStorage.getItem("tasks")) || [];
+
     const todoList = $('#todo-cards');
     todoList.empty();
 
@@ -57,7 +59,7 @@ function renderTaskList() {
     const doneList = $('#done-cards');
     doneList.empty();
 
-    for (let task in taskList) {
+    for (let task of taskList) {
         if (task.status === 'to-do') {
             todoList.append(createTaskCard(task));
         } else if (task.status === 'in-progress') {
@@ -95,21 +97,23 @@ function handleAddTask(event){
         status: 'to-do'
     };
 
-    const tasks = taskList;
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
     tasks.push(newTask);
 
     localStorage.setItem('tasks', JSON.stringify(tasks));
 
-    renderTaskList();
-
     taskTitleInputEl.val('');
     taskDateInputEl.val('');
     taskDescriptionInputEl.val('');
+
+    $('#formModal').modal('hide');
+
+    renderTaskList();
 }
 
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event){
-    const taskId = event.target.setAttribute('data-task-id');
+    const taskId = $(this).attr('data-task-id');
     const tasks = JSON.parse(localStorage.getItem("tasks"));
 
     tasks.forEach((task) => {
@@ -143,10 +147,11 @@ const formModal = document.getElementById('formModal');
 if (formModal) {
     formModal.addEventListener('show.bs.modal', event => {
     const button = event.relatedTarget;
+
+    taskFormEl.on('submit', handleAddTask);
   });
 }
 
-taskFormEl.on('submit', handleAddTask);
 
 taskDisplayEl.on('click', '.btn-delete-task', handleDeleteTask);
 
