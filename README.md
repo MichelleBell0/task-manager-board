@@ -12,8 +12,8 @@ The task cards are colour coded:
 The colour coordination helps the user prioritize his tasks and stay on track. In addition, the task cards are draggable and droppable between the status lanes "To Do", "In Progress", and "Done". Once a task card is moved to the "Done" lane the card colour changes to white. If the user wishes to delete a task, the task card contains a delete button that will remove the task from the list and local storage. 
 
 ## Screenshot
-![Task List Displayed Screenshot](task-list.png)
-![Task Manager Modal Form Screenshot](modal-form.png)
+![Task List Displayed Screenshot](./assets/task-list.png)
+![Task Manager Modal Form Screenshot](./assets/modal-form.png)
 
 ## URL
 https://michellebell0.github.io/task-manager-board/
